@@ -5,22 +5,39 @@ import './Home.css';
 class Home extends React.Component {
 
   state = {
-    kids: ['kid1', 'kid2'],
+    kids: [],
     tasks: []
   }
 
   componentDidMount() {
+    this.getKiddos()
     this.getTasks()
   }
 
   getTasks() {
-    let hardCodedTasks = ['task1', 'task2', 'task3']
-    let list = []
+    let hardCodedTasks = ['task1', 'task2', 'task3'];
+    let list = [];
     for (let task of hardCodedTasks) {
-      list.push(<Card fluid header={task} />)  
+      list.push(<Card fluid header={task} key={task}/>)  
     }
     this.setState({
       tasks: list
+    })
+  }
+
+  getKiddos() {
+    let hardCodedKiddos = ['kid1', 'kid2'];
+    let list = [];
+    for (let kid of hardCodedKiddos) {
+      list.push(
+        <Card
+          href='#card-example-link-card'
+          header={kid}
+        />
+      )
+    }
+    this.setState({
+      kids: list
     })
   }
 
@@ -29,7 +46,8 @@ class Home extends React.Component {
       <Grid className="homeContainer">
         <Grid.Row>
           <Grid.Column className="kidsList six wide" width={4}>
-            My kiddos
+            <h3>My kiddos</h3>
+            {this.state.kids}
           </Grid.Column>
           <Grid.Column className="tasksContainer ten wide" width={10}>
           <h3>You have {this.state.tasks.length} tasks to complete today</h3>
