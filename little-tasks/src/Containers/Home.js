@@ -1,23 +1,45 @@
 import React from 'react';
-import { Card } from 'semantic-ui-react';
+import { Card, Grid } from 'semantic-ui-react';
+import './Home.css';
 
 class Home extends React.Component {
 
   state = {
-    tasks: ['task1', 'task2', 'task3']
+    kids: ['kid1', 'kid2'],
+    tasks: []
   }
 
+  componentDidMount() {
+    this.getTasks()
+  }
+
+  getTasks() {
+    let hardCodedTasks = ['task1', 'task2', 'task3']
+    let list = []
+    for (let task of hardCodedTasks) {
+      list.push(<Card fluid header={task} />)  
+    }
+    this.setState({
+      tasks: list
+    })
+  }
 
   render() {
     return(
-      <div>
-        <Card fluid as='h3'>You have {this.state.tasks.length} tasks to complete</Card>
-        <Card.Group>
-          <Card fluid header='Option 1' />
-          <Card fluid header='Option 2' />
-          <Card fluid header='Option 3' />
-        </Card.Group>
-      </div>
+      <Grid className="homeContainer">
+        <Grid.Row>
+          <Grid.Column className="kidsList six wide" width={4}>
+            My kiddos
+          </Grid.Column>
+          <Grid.Column className="tasksContainer ten wide" width={10}>
+          <h3>You have {this.state.tasks.length} tasks to complete today</h3>
+            <Card.Group>
+              {this.state.tasks}
+            </Card.Group>
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
+
     )
   }
 }
