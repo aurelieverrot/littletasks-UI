@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, Grid } from 'semantic-ui-react';
 import './Home.css';
+import TasksApi from '../api/TasksApi';
 
 class Home extends React.Component {
 
@@ -16,9 +17,12 @@ class Home extends React.Component {
 
   getTasks() {
     let hardCodedTasks = ['task1', 'task2', 'task3'];
+    const tasksFromApi = TasksApi.tasksIndex()
+    .then(res => console.log(res.data));
+
     let list = [];
-    for (let task of hardCodedTasks) {
-      list.push(<Card fluid header={task} key={task}/>)  
+    for (let task of tasksFromApi) {
+      list.push(<Card fluid header={task}/>)  
     }
     this.setState({
       tasks: list
