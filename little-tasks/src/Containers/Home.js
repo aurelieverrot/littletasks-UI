@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Grid } from 'semantic-ui-react';
+import { Card, Grid, Form } from 'semantic-ui-react';
 import './Home.css';
 import TasksApi from '../api/TasksApi';
 
@@ -7,7 +7,8 @@ class Home extends React.Component {
 
   state = {
     kids: [],
-    tasks: []
+    tasks: [],
+    input: ''
   }
 
   componentDidMount() {
@@ -45,7 +46,7 @@ class Home extends React.Component {
 
   render() {
 
-     // generate JSX
+     // generate JSX for the tasks list
      let tasksList = [];
      for (let task of this.state.tasks) {
        tasksList.push(<Card fluid header={task.description}/>)  
@@ -59,7 +60,18 @@ class Home extends React.Component {
             {this.state.kids}
           </Grid.Column>
           <Grid.Column className="tasksContainer ten wide" width={10}>
-          <h3>You have {this.state.tasks.length} tasks to complete today</h3>
+            <h3>You have {this.state.tasks.length} tasks to complete today</h3>
+            <Form>
+              <Form.Group widths='equal'>
+                <Form.Input fluid label='Description' placeholder='Describe task' />
+                <Form.Select
+                  fluid
+                  label='Kiddo'
+                  options={this.state.kids}
+                  placeholder='Select a kiddo'
+                />
+              </Form.Group>
+            </Form>
             <Card.Group>
               {tasksList}
             </Card.Group>
