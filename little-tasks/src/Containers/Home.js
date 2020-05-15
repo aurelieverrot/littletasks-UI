@@ -12,21 +12,18 @@ class Home extends React.Component {
 
   componentDidMount() {
     this.getKiddos()
-    this.getTasks()
+    this.getTasksFromApi()
+
   }
 
-  getTasks() {
-    let hardCodedTasks = ['task1', 'task2', 'task3'];
-    const tasksFromApi = TasksApi.tasksIndex()
-    .then(res => console.log(res.data));
-
-    let list = [];
-    for (let task of tasksFromApi) {
-      list.push(<Card fluid header={task}/>)  
-    }
-    this.setState({
-      tasks: list
-    })
+  getTasksFromApi() {
+    TasksApi.tasksIndex()
+    .then(res => 
+      this.setState({
+      // 1/ set this.state.tasks = to res.data
+      // 2/ generate the JSX in the render method
+        tasks: res.data
+      }))
   }
 
   getKiddos() {
@@ -45,7 +42,15 @@ class Home extends React.Component {
     })
   }
 
+
   render() {
+
+     // generate JSX
+     let tasksList = [];
+     for (let task of this.state.tasks) {
+       tasksList.push(<Card fluid header={task.description}/>)  
+     }
+
     return(
       <Grid className="homeContainer">
         <Grid.Row>
@@ -56,7 +61,7 @@ class Home extends React.Component {
           <Grid.Column className="tasksContainer ten wide" width={10}>
           <h3>You have {this.state.tasks.length} tasks to complete today</h3>
             <Card.Group>
-              {this.state.tasks}
+              {tasksList}
             </Card.Group>
           </Grid.Column>
         </Grid.Row>
