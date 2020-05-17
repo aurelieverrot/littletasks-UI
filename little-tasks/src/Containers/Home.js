@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, Grid, Form } from 'semantic-ui-react';
 import './Home.css';
 import TasksApi from '../api/TasksApi';
+import KiddosApi from '../api/KiddosApi';
 
 class Home extends React.Component {
 
@@ -13,7 +14,7 @@ class Home extends React.Component {
 
   componentDidMount() {
     // fire these methods when render the page the first time
-    this.getKiddos()
+    this.getKiddosFromApi()
     this.getTasksFromApi()
   }
 
@@ -26,29 +27,36 @@ class Home extends React.Component {
       }))
   }
 
-  getKiddos() {
+  getKiddosFromApi() {
     //To Do: Get kids from API, put Kid data in state, generate JSX
-    let hardCodedKiddos = ['kid1', 'kid2'];
-    let list = [];
-    for (let kid of hardCodedKiddos) {
-      list.push(
-        <Card
-          href='#card-example-link-card'
-          header={kid}
-        />
-      )}
-    this.setState({
-      kids: list
-    })
+    KiddosApi.kiddosIndex()
+    .then(res => 
+      this.setState({
+        kids: res.data
+      }))
+      console.log(this.state)
+    // let hardCodedKiddos = ['kid1', 'kid2'];
+    // let list = [];
+    // for (let kid of hardCodedKiddos) {
+    //   list.push(
+    //     <Card
+    //       href='#card-example-link-card'
+    //       header={kid}
+    //     />
+    //   )}
+    // this.setState({
+    //   kids: list
+    // })
   }
 
   handleSubmit = (e) => {
     e.preventDefault()
-    // sends data from the state to the API to create a new task
     TasksApi.tasksCreate({
       description: this.state.newTask
     })
-    .then(res => console.log(res.data))
+    .then(res => this.setState({
+      tasks: this.state.tasks.concat(res.data)
+    }))
   }
 
   handleChange = (e) => {
@@ -58,18 +66,28 @@ class Home extends React.Component {
   }
 
   render() {
-     // generate JSX for the tasks list
-     let tasksList = [];
-     for (let task of this.state.tasks) {
-       tasksList.push(<Card fluid header={task.description}/>)  
-     }
+    // generate JSX for the tasks list
+    let tasksList = [];
+    for (let task of this.state.tasks) {
+      tasksList.push(<Card fluid header={task.description}/>)  
+    }
+
+    // generate JSX for the kiddos list
+    let kiddosList = [];
+    for (let kid of this.state.kids) {
+      kiddosList.push(
+        <Card
+          href='#card-example-link-card'
+          header={kid.name}
+        />
+      )}
 
     return(
       <Grid className="homeContainer">
         <Grid.Row>
           <Grid.Column className="kidsList six wide" width={4}>
             <h3>My kiddos</h3>
-            {this.state.kids}
+            {kiddosList}
           </Grid.Column>
           <Grid.Column className="tasksContainer ten wide" width={10}>
             <h3>You have {this.state.tasks.length} tasks to complete today</h3>
@@ -84,7 +102,7 @@ class Home extends React.Component {
                 />
                 <Form.Select
                   label='Kiddo'
-                  options={this.state.kids}
+                  options={kiddosList}
                   placeholder='Select a Kid'
                 />
                 <Form.Button content='Add' />
