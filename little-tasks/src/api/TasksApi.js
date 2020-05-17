@@ -7,6 +7,11 @@ const tasksIndex = () => {
   return axios.get(endpoint)
 }
 
+const tasksCreate = (info) => {
+  return axios.post(endpoint, info)
+}
+
 export default {
   tasksIndex,
+  tasksCreate
 }

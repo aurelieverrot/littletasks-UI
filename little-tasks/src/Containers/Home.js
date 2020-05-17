@@ -42,8 +42,13 @@ class Home extends React.Component {
     })
   }
 
-  handleSubmit() {
+  handleSubmit = (e) => {
+    e.preventDefault()
     // sends data from the state to the API to create a new task
+    TasksApi.tasksCreate({
+      description: this.state.newTask
+    })
+    .then(res => console.log(res.data))
   }
 
   handleChange = (e) => {
