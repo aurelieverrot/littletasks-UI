@@ -8,26 +8,26 @@ class Home extends React.Component {
   state = {
     kids: [],
     tasks: [],
-    input: ''
+    newTask: ''
   }
 
   componentDidMount() {
+    // fire these methods when render the page the first time
     this.getKiddos()
     this.getTasksFromApi()
-
   }
 
   getTasksFromApi() {
     TasksApi.tasksIndex()
     .then(res => 
       this.setState({
-      // 1/ set this.state.tasks = to res.data
-      // 2/ generate the JSX in the render method
+      // set this.state.tasks = to res.data
         tasks: res.data
       }))
   }
 
   getKiddos() {
+    //To Do: Get kids from API, put Kid data in state, generate JSX
     let hardCodedKiddos = ['kid1', 'kid2'];
     let list = [];
     for (let kid of hardCodedKiddos) {
@@ -36,16 +36,23 @@ class Home extends React.Component {
           href='#card-example-link-card'
           header={kid}
         />
-      )
-    }
+      )}
     this.setState({
       kids: list
     })
   }
 
+  handleSubmit() {
+    // sends data from the state to the API to create a new task
+  }
+
+  handleChange = (e) => {
+    this.setState({
+      newTask: e.target.value
+    })
+  }
 
   render() {
-
      // generate JSX for the tasks list
      let tasksList = [];
      for (let task of this.state.tasks) {
@@ -61,15 +68,21 @@ class Home extends React.Component {
           </Grid.Column>
           <Grid.Column className="tasksContainer ten wide" width={10}>
             <h3>You have {this.state.tasks.length} tasks to complete today</h3>
-            <Form>
-              <Form.Group widths='equal'>
-                <Form.Input fluid label='Description' placeholder='Describe task' />
+            <Form onSubmit={this.handleSubmit}> 
+              <Form.Group>
+                <Form.Input
+                  label='Description'
+                  placeholder='Describe the task'
+                  name='task'
+                //  value={onInput}
+                  onChange={this.handleChange} // search how is made handleChange usually
+                />
                 <Form.Select
-                  fluid
                   label='Kiddo'
                   options={this.state.kids}
-                  placeholder='Select a kiddo'
+                  placeholder='Select a Kid'
                 />
+                <Form.Button content='Add' />
               </Form.Group>
             </Form>
             <Card.Group>
@@ -78,7 +91,6 @@ class Home extends React.Component {
           </Grid.Column>
         </Grid.Row>
       </Grid>
-
     )
   }
 }
