@@ -81,6 +81,15 @@ class Home extends React.Component {
           header={kid.name}
         />
       )}
+    
+    const dropdownOptions = [];
+    for (let kid of this.state.kids) {
+      dropdownOptions.push({
+        key: kid.name,
+        text: kid.name,
+        value: kid.name
+      })
+    }
 
     return(
       <Grid className="homeContainer">
@@ -101,8 +110,10 @@ class Home extends React.Component {
                   onChange={this.handleChange} // search how is made handleChange usually
                 />
                 <Form.Select
+                  
                   label='Kiddo'
-                  options={kiddosList}
+                  selection
+                  options={dropdownOptions}
                   placeholder='Select a Kid'
                 />
                 <Form.Button content='Add' />
