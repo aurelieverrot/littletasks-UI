@@ -9,7 +9,8 @@ class Home extends React.Component {
   state = {
     kids: [],
     tasks: [],
-    newTask: ''
+    newTask: '',
+    selectedKid: ''
   }
 
   componentDidMount() {
@@ -22,50 +23,65 @@ class Home extends React.Component {
     TasksApi.tasksIndex()
     .then(res => 
       this.setState({
-      // set this.state.tasks = to res.data
+      // set this.state.tasks equal to res.data to have the whole object in the state
         tasks: res.data
       }))
   }
 
   getKiddosFromApi() {
-    //To Do: Get kids from API, put Kid data in state, generate JSX
     KiddosApi.kiddosIndex()
     .then(res => 
       this.setState({
         kids: res.data
       }))
-      console.log(this.state)
-    // let hardCodedKiddos = ['kid1', 'kid2'];
-    // let list = [];
-    // for (let kid of hardCodedKiddos) {
-    //   list.push(
-    //     <Card
-    //       href='#card-example-link-card'
-    //       header={kid}
-    //     />
-    //   )}
-    // this.setState({
-    //   kids: list
-    // })
   }
 
   handleSubmit = (e) => {
     e.preventDefault()
     TasksApi.tasksCreate({
-      description: this.state.newTask
+      description: this.state.newTask,
+      kiddo: this.state.selectedKid
     })
-    .then(res => this.setState({
-      tasks: this.state.tasks.concat(res.data)
-    }))
+    .then(res => {
+                    this.setState({
+                      tasks: this.state.tasks.concat(res.data),
+                      newTask: '',
+                      selectedKid: ''
+                    })
+                }
+    )
   }
 
-  handleChange = (e) => {
-    this.setState({
-      newTask: e.target.value
-    })
-  }
+  // handleChangeDescription = (e, { value }) => {
+  //   this.setState({
+  //     newTask: value,
+  //   })
+  // }
+
+  // handleChangeKiddo = (e, { value }) => {
+  //   this.setState({
+  //     selectedKid: value,
+  //   })
+  // }
+
+  // fonction qui retourne une fonction
+  handleChange = (key) =>
+
+    (e, { value }) => {
+
+      // create new state object
+      let newState = {};
+      newState[key] = value;
+
+
+      // set it to the state
+      this.setState(newState)
+    }
+
 
   render() {
+    console.log(this.state)
+
     // generate JSX for the tasks list
     let tasksList = [];
     for (let task of this.state.tasks) {
@@ -85,11 +101,12 @@ class Home extends React.Component {
     const dropdownOptions = [];
     for (let kid of this.state.kids) {
       dropdownOptions.push({
-        key: kid.name,
+        key: kid._id,
         text: kid.name,
-        value: kid.name
+        value: kid._id
       })
     }
+    // console.log(this.state.kids)
 
     return(
       <Grid className="homeContainer">
@@ -106,15 +123,16 @@ class Home extends React.Component {
                   label='Description'
                   placeholder='Describe the task'
                   name='task'
-                //  value={onInput}
-                  onChange={this.handleChange} // search how is made handleChange usually
+                  value={this.state.newTask}
+                  onChange={this.handleChange('newTask')} // search how is made handleChange usually
                 />
                 <Form.Select
-                  
                   label='Kiddo'
                   selection
                   options={dropdownOptions}
                   placeholder='Select a Kid'
+                  value={this.state.selectedKid}
+                  onChange={this.handleChange('selectedKid')}
                 />
                 <Form.Button content='Add' />
               </Form.Group>
