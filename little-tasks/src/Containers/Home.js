@@ -43,6 +43,8 @@ class Home extends React.Component {
       kiddo: this.state.selectedKid
     })
     .then(res => {
+      // after response from API, we update the state with the new task 
+      // and set the values of input and dropdown to '' in the state
                     this.setState({
                       tasks: this.state.tasks.concat(res.data),
                       newTask: '',
