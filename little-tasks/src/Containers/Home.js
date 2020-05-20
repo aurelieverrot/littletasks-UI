@@ -45,37 +45,21 @@ class Home extends React.Component {
     .then(res => {
       // after response from API, we update the state with the new task 
       // and set the values of input and dropdown to '' in the state
-                    this.setState({
-                      tasks: this.state.tasks.concat(res.data),
-                      newTask: '',
-                      selectedKid: ''
-                    })
-                }
+        this.setState({
+          tasks: this.state.tasks.concat(res.data),
+          newTask: '',
+          selectedKid: ''
+        })
+      }
     )
   }
 
-  // handleChangeDescription = (e, { value }) => {
-  //   this.setState({
-  //     newTask: value,
-  //   })
-  // }
-
-  // handleChangeKiddo = (e, { value }) => {
-  //   this.setState({
-  //     selectedKid: value,
-  //   })
-  // }
-
-  // fonction qui retourne une fonction
   handleChange = (key) =>
-
+  // the key is given in the JSX
     (e, { value }) => {
-
       // create new state object
       let newState = {};
       newState[key] = value;
-
-
       // set it to the state
       this.setState(newState)
     }
@@ -87,7 +71,20 @@ class Home extends React.Component {
     // generate JSX for the tasks list
     let tasksList = [];
     for (let task of this.state.tasks) {
-      tasksList.push(<Card fluid header={task.description}/>)  
+      tasksList.push(
+        <div className="taskBlock" key={task._id}>
+          <h3>{task.description}</h3>
+          <div className="taskBlockButtons">
+            <button className="basic ui button taskButton">
+              Done!
+            </button>
+            <button className="basic ui button taskButton">
+              Delete
+            </button>
+          </div>
+        </div>
+        
+        )  
     }
 
     // generate JSX for the kiddos list
@@ -97,6 +94,7 @@ class Home extends React.Component {
         <Card
           href='#card-example-link-card'
           header={kid.name}
+          key={kid._id}
         />
       )}
     
@@ -108,7 +106,6 @@ class Home extends React.Component {
         value: kid._id
       })
     }
-    // console.log(this.state.kids)
 
     return(
       <Grid className="homeContainer">
@@ -119,8 +116,8 @@ class Home extends React.Component {
           </Grid.Column>
           <Grid.Column className="tasksContainer ten wide" width={10}>
             <h3>You have {this.state.tasks.length} tasks to complete today</h3>
-            <Form onSubmit={this.handleSubmit}> 
-              <Form.Group>
+            <Form onSubmit={this.handleSubmit} className="taskForm"> 
+              <Form.Group >
                 <Form.Input
                   label='Description'
                   placeholder='Describe the task'
