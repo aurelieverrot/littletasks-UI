@@ -28,12 +28,26 @@ class Home extends React.Component {
       }))
   }
 
+  setTaskToDone() {
+    // API call to task update, 
+    // 1/ set task status to true
+    // 2/ make disappear the task
+    // 3/ update state
+  }
+
   getKiddosFromApi() {
     KiddosApi.kiddosIndex()
-    .then(res => 
+    .then(res => {
+      const listOfKids = res.data;
+      let dict = {}
+
+      listOfKids.forEach(function(element) {
+        dict[element._id] = element
+      })
+
       this.setState({
-        kids: res.data
-      }))
+        kids: dict
+      })})
   }
 
   handleSubmit = (e) => {
@@ -44,7 +58,7 @@ class Home extends React.Component {
     })
     .then(res => {
       // after response from API, we update the state with the new task 
-      // and set the values of input and dropdown to '' in the state
+      // and set the values of input and dropdown back to '' in the state
         this.setState({
           tasks: this.state.tasks.concat(res.data),
           newTask: '',
@@ -73,7 +87,7 @@ class Home extends React.Component {
     for (let task of this.state.tasks) {
       tasksList.push(
         <div className="taskBlock" key={task._id}>
-          <h3>{task.description}</h3>
+          <h3>{task.description}</h3><p>by {this.state.kids[task.kiddo] ? this.state.kids[task.kiddo].name : 'dunno'}</p>
           <div className="taskBlockButtons">
             <button className="basic ui button taskButton">
               Done!
@@ -83,23 +97,22 @@ class Home extends React.Component {
             </button>
           </div>
         </div>
-        
         )  
     }
 
     // generate JSX for the kiddos list
     let kiddosList = [];
-    for (let kid of this.state.kids) {
+    const dropdownOptions = [];
+
+    for(let kid of Object.values(this.state.kids)) {
       kiddosList.push(
         <Card
           href='#card-example-link-card'
           header={kid.name}
           key={kid._id}
         />
-      )}
-    
-    const dropdownOptions = [];
-    for (let kid of this.state.kids) {
+      )
+
       dropdownOptions.push({
         key: kid._id,
         text: kid.name,
