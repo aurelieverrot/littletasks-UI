@@ -4,13 +4,15 @@ import './Home.css';
 import TasksApi from '../api/TasksApi';
 import KiddosApi from '../api/KiddosApi';
 
+const DEFAULT_KID_SELECTED_VALUE = "something that doesn't look like a mongo ID because i'll be confused if it ever does";
 class Home extends React.Component {
 
   state = {
     kids: [],
     tasks: [],
     newTask: '',
-    selectedKid: ''
+    selectedKidDropdown: null,
+    selectedKidMenu: DEFAULT_KID_SELECTED_VALUE
   }
 
   componentDidMount() {
@@ -50,11 +52,19 @@ class Home extends React.Component {
       })})
   }
 
+  selectKiddo = (kiddoId) =>
+    (e) => {
+      e.preventDefault()
+      this.setState({
+        selectedKidMenu: kiddoId
+      })
+    }
+
   handleSubmit = (e) => {
     e.preventDefault()
     TasksApi.tasksCreate({
       description: this.state.newTask,
-      kiddo: this.state.selectedKid
+      kiddo: this.state.selectedKidDropdown
     })
     .then(res => {
       // after response from API, we update the state with the new task 
@@ -62,11 +72,56 @@ class Home extends React.Component {
         this.setState({
           tasks: this.state.tasks.concat(res.data),
           newTask: '',
-          selectedKid: ''
+          selectedKidDropdown: ''
         })
       }
     )
   }
+
+  handleDelete = (taskId) =>
+    (e) => {
+      e.preventDefault()
+      
+      console.log(taskId)
+      TasksApi.tasksDelete(taskId)
+      // .then(res => console.log(res.data))
+      // .then(() => this.getTasksFromApi()) => ca ca marche mais c'est riche
+      .then(res => {
+
+        let remainingTasks = this.state.tasks.filter((task) => task._id !== taskId)
+        this.setState({tasks: remainingTasks})
+
+      })
+      .catch(error => {
+        if (!error.status) {
+          console.log("Plus le net :-( ")
+          return
+        }
+        // if already deleted, in any case, not in the DB anymore
+        if(error.response.status === 404) {
+          // drop it if it's nowhere to be found
+          let remainingTasks = this.state.tasks.filter((task) => task._id !== taskId)
+          this.setState({tasks: remainingTasks})
+          alert(error.response.statusText)
+        }
+      })
+    }
+
+  handleDoneTask = (taskId) =>
+    (e) => { 
+      e.preventDefault()
+      this.state.tasks.forEach((task) => {
+        if (task._id === taskId) {
+          task.status = true
+        }
+      })
+      TasksApi.tasksUpdate(taskId, {status: true})
+      .then(res => 
+        this.setState({
+          tasks: this.state.tasks
+        }))
+      
+    }
 
   handleChange = (key) =>
   // the key is given in the JSX
@@ -84,25 +139,41 @@ class Home extends React.Component {
 
     // generate JSX for the tasks list
     let tasksList = [];
+         
     for (let task of this.state.tasks) {
-      tasksList.push(
-        <div className="taskBlock" key={task._id}>
-          <h3>{task.description}</h3><p>by {this.state.kids[task.kiddo] ? this.state.kids[task.kiddo].name : 'dunno'}</p>
-          <div className="taskBlockButtons">
-            <button className="basic ui button taskButton">
-              Done!
-            </button>
-            <button className="basic ui button taskButton">
-              Delete
-            </button>
+      const thatKidIsCurrentlySelected = this.state.selectedKidMenu === task.kiddo;
+      const gottaDisplayEverybody = this.state.selectedKidMenu === DEFAULT_KID_SELECTED_VALUE;
+      const taskNotDone = task.status === false;
+      // 
+      if (taskNotDone && (gottaDisplayEverybody || thatKidIsCurrentlySelected)) {
+        tasksList.push(
+          <div className="taskBlock" key={task._id}>
+            <h4>{task.description}</h4><p>by {this.state.kids[task.kiddo] ? this.state.kids[task.kiddo].name : 'dunno'}</p>
+            <div className="taskBlockButtons">
+              <button className="basic ui button taskButton done" onClick={this.handleDoneTask(task._id)}>
+                Done!
+              </button>
+              <button className="basic ui button taskButton delete" onClick={this.handleDelete(task._id)}>
+                Delete
+              </button>
+            </div>
           </div>
-        </div>
-        )  
+          )  
+        }
     }
 
     // generate JSX for the kiddos list
     let kiddosList = [];
     const dropdownOptions = [];
+
+    kiddosList.push(
+      <Card
+        href='#card-example-link-card'
+        header="All kiddos"
+        key="all"
+        onClick={this.selectKiddo(DEFAULT_KID_SELECTED_VALUE)}
+      />
+    )
 
     for(let kid of Object.values(this.state.kids)) {
       kiddosList.push(
@@ -110,6 +181,7 @@ class Home extends React.Component {
           href='#card-example-link-card'
           header={kid.name}
           key={kid._id}
+          onClick={this.selectKiddo(kid._id)}
         />
       )
 
@@ -143,8 +215,8 @@ class Home extends React.Component {
                   selection
                   options={dropdownOptions}
                   placeholder='Select a Kid'
-                  value={this.state.selectedKid}
-                  onChange={this.handleChange('selectedKid')}
+                  value={this.state.selectedKidDropdown}
+                  onChange={this.handleChange('selectedKidDropdown')}
                 />
                 <Form.Button content='Add' />
               </Form.Group>
