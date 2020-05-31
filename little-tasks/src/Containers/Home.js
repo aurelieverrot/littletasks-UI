@@ -177,13 +177,21 @@ class Home extends React.Component {
 
     for(let kid of Object.values(this.state.kids)) {
       kiddosList.push(
-        <Card
-          href='#card-example-link-card'
-          header={kid.name}
+        <Card 
           key={kid._id}
           onClick={this.selectKiddo(kid._id)}
-        />
+        >
+          <Card.Content>
+            <Card.Header>{kid.name}</Card.Header>
+          </Card.Content>
+          <Card.Content extra>
+            <a>
+              Points: {kid.totalPoints}
+            </a>
+          </Card.Content>
+        </Card>
       )
+      
 
       dropdownOptions.push({
         key: kid._id,
