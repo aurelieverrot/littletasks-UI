@@ -1,10 +1,10 @@
 import React from 'react';
-import { Card, Grid, Form } from 'semantic-ui-react';
+import { Card, Grid, Form, Button } from 'semantic-ui-react';
 import './Home.css';
 import TasksApi from '../api/TasksApi';
 import KiddosApi from '../api/KiddosApi';
 
-const DEFAULT_KID_SELECTED_VALUE = "something that doesn't look like a mongo ID because i'll be confused if it ever does";
+const DEFAULT_KID_SELECTED_VALUE = "something";
 class Home extends React.Component {
 
   state = {
@@ -147,17 +147,22 @@ class Home extends React.Component {
       // 
       if (taskNotDone && (gottaDisplayEverybody || thatKidIsCurrentlySelected)) {
         tasksList.push(
-          <div className="taskBlock" key={task._id}>
-            <h4>{task.description}</h4><p>by {this.state.kids[task.kiddo] ? this.state.kids[task.kiddo].name : 'dunno'}</p>
-            <div className="taskBlockButtons">
-              <button className="basic ui button taskButton done" onClick={this.handleDoneTask(task._id)}>
-                Done!
-              </button>
-              <button className="basic ui button taskButton delete" onClick={this.handleDelete(task._id)}>
-                Delete
-              </button>
-            </div>
-          </div>
+          <Card className="taskBlock" key={task._id}>
+            <Card.Content>
+              <Card.Header>{task.description}</Card.Header>
+              <Card.Meta>by {this.state.kids[task.kiddo] ? this.state.kids[task.kiddo].name : 'dunno'}</Card.Meta>
+            </Card.Content>
+            <Card.Content extra>
+              <div className='ui two buttons'>
+                <Button basic color='green' onClick={this.handleDoneTask(task._id)}>
+                  Done!
+                </Button>
+                <Button basic color='red' onClick={this.handleDelete(task._id)}>
+                  Delete
+                </Button>
+              </div>
+            </Card.Content>
+          </Card>
           )  
         }
     }
@@ -185,9 +190,7 @@ class Home extends React.Component {
             <Card.Header>{kid.name}</Card.Header>
           </Card.Content>
           <Card.Content extra>
-            <a>
               Points: {kid.totalPoints}
-            </a>
           </Card.Content>
         </Card>
       )
