@@ -20,3 +20,8 @@ form.taskForm {
 .taskBlockButtons {
   align-items: flex-end;
 }
+
+/* Button Add Task */
+button.ui.button {
+  margin-top: 23px
+}

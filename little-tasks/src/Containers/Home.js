@@ -94,7 +94,7 @@ class Home extends React.Component {
       })
       .catch(error => {
         if (!error.status) {
-          console.log("Plus le net :-( ")
+          console.log("There might be a connexion problem")
           return
         }
         // if already deleted, in any case, not in the DB anymore
@@ -229,7 +229,7 @@ class Home extends React.Component {
                   value={this.state.selectedKidDropdown}
                   onChange={this.handleChange('selectedKidDropdown')}
                 />
-                <Form.Button content='Add' />
+                <Form.Button content='Add' className="btnAdd" />
               </Form.Group>
             </Form>
             <Card.Group>
