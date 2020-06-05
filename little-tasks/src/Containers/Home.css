@@ -25,7 +25,8 @@ h3 {
 form.taskForm {
   margin-bottom: 25px;
 }
-.taskBlock {
+
+.ui.card.taskBlock {
   display: flex;
   flex-direction: row;
   width: 100%;
@@ -37,9 +38,10 @@ form.taskForm {
   box-shadow: 0 1px 1px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
   color: #403f3d;
 }
-.taskBlockButtons {
+/* .taskBlockButtons {
   align-items: flex-end;
-}
+  margin-top: 30px;
+} */
 
 /* Button Add Task */
 button.ui.button {
