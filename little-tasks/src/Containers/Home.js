@@ -206,12 +206,12 @@ class Home extends React.Component {
     return(
       <Grid className="homeContainer">
         <Grid.Row>
-          <Grid.Column className="kidsList six wide" width={4}>
+          <Grid.Column className="kidsList four wide" width={4}>
             <h3>My kiddos</h3>
             {kiddosList}
           </Grid.Column>
           <Grid.Column className="tasksContainer ten wide" width={10}>
-            <h3>You have {this.state.tasks.length} tasks to complete today</h3>
+            <h3>You have {this.state.tasks.length} task(s) to complete today</h3>
             <Form onSubmit={this.handleSubmit} className="taskForm"> 
               <Form.Group >
                 <Form.Input
@@ -228,6 +228,7 @@ class Home extends React.Component {
                   placeholder='Select a Kid'
                   value={this.state.selectedKidDropdown}
                   onChange={this.handleChange('selectedKidDropdown')}
+                  icon='i dropdown'
                 />
                 <Form.Button content='Add' className="btnAdd" />
               </Form.Group>
