@@ -214,14 +214,14 @@ class Home extends React.Component {
             <h3>You have {this.state.tasks.length} task(s) to complete today</h3>
             <Form onSubmit={this.handleSubmit} className="taskForm"> 
               <Form.Group >
-                <Form.Input
+                <Form.Input className="six wide"
                   label='Description'
                   placeholder='Describe the task'
                   name='task'
                   value={this.state.newTask}
                   onChange={this.handleChange('newTask')} // search how is made handleChange usually
                 />
-                <Form.Select
+                <Form.Select className="six wide"
                   label='Kiddo'
                   selection
                   options={dropdownOptions}
@@ -230,7 +230,7 @@ class Home extends React.Component {
                   onChange={this.handleChange('selectedKidDropdown')}
                   icon='i dropdown'
                 />
-                <Form.Button content='Add' className="btnAdd" />
+                <Form.Button content='Add'  className="four wide " />
               </Form.Group>
             </Form>
             <Card.Group>

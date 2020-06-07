@@ -33,10 +33,19 @@ form.taskForm {
   margin-right: 30px;
   margin-bottom: 3px;
   padding: 3px;
-  border: 1px #ffcf33 solid;
+ 
   border-radius: 5px;
-  box-shadow: 0 1px 1px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
   color: #403f3d;
+
+  /* border: none !important;
+  box-shadow: none !important; */
+  border: 1px #ffcf33 solid;
+  box-shadow: none !important;
+}
+
+
+.ui.card.taskBlock .extra.content {
+  border: none !important;
 }
 /* .taskBlockButtons {
   align-items: flex-end;
