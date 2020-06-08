@@ -185,6 +185,7 @@ class Home extends React.Component {
         <Card 
           key={kid._id}
           onClick={this.selectKiddo(kid._id)}
+          className="kiddoCards"
         >
           <Card.Content>
             <Card.Header>{kid.name}</Card.Header>

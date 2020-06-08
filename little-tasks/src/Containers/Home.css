@@ -37,9 +37,16 @@ form.taskForm {
   border-radius: 5px;
   color: #403f3d;
 
-  /* border: none !important;
-  box-shadow: none !important; */
   border: 1px #ffcf33 solid;
+  box-shadow: none !important;
+}
+
+.ui.card.kiddoCards {
+  border: 1px #ff338f solid;
+  box-shadow: none !important;
+}
+.ui.card.kiddoCards:hover {
+  border: 1px #ff338f solid;
   box-shadow: none !important;
 }
 
@@ -47,10 +54,6 @@ form.taskForm {
 .ui.card.taskBlock .extra.content {
   border: none !important;
 }
-/* .taskBlockButtons {
-  align-items: flex-end;
-  margin-top: 30px;
-} */
 
 /* Button Add Task */
 button.ui.button {
