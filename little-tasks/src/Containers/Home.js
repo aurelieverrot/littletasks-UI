@@ -212,7 +212,7 @@ class Home extends React.Component {
             {kiddosList}
           </Grid.Column>
           <Grid.Column className="tasksContainer ten wide" width={10}>
-            <h3>You have {this.state.tasks.length} task(s) to complete today</h3>
+            <h3>{this.state.tasks.length} task(s) to complete today</h3>
             <Form onSubmit={this.handleSubmit} className="taskForm"> 
               <Form.Group >
                 <Form.Input className="six wide"

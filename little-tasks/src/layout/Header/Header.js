@@ -7,7 +7,7 @@ const Header = () => {
     <header>  
       <Sticky>
         <div className="ui borderless inverted menu">   
-            <div className="header item">Little Tasks</div>
+            <h3 className="header item">Little Tasks</h3>
         </div>
       </Sticky>
     </header>

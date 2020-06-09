@@ -5,7 +5,7 @@ const Footer = () => {
 
   return (
     <footer className="ui borderless inverted menu">   
-        <div className="footer item">Aurelie Verrot - 2020</div>
+        <h4 className="footer item">Aurelie Verrot - 2020</h4>
     </footer>
   )
 };
