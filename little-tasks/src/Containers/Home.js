@@ -1,4 +1,5 @@
 import React from 'react';
+import TasksList from '../components/TasksList/TasksList'
 import { Card, Grid, Form, Button } from 'semantic-ui-react';
 import './Home.css';
 import TasksApi from '../api/TasksApi';
@@ -196,7 +197,6 @@ class Home extends React.Component {
         </Card>
       )
       
-
       dropdownOptions.push({
         key: kid._id,
         text: kid.name,
@@ -211,7 +211,11 @@ class Home extends React.Component {
             <h3>My kiddos</h3>
             {kiddosList}
           </Grid.Column>
-          <Grid.Column className="tasksContainer ten wide" width={10}>
+          <TasksList
+            dropdownOptions={dropdownOptions}
+            homeState={this.state}
+            />
+          {/* <Grid.Column className="tasksContainer ten wide" width={10}>
             <h3>{this.state.tasks.length} task(s) to complete today</h3>
             <Form onSubmit={this.handleSubmit} className="taskForm"> 
               <Form.Group >
@@ -237,7 +241,7 @@ class Home extends React.Component {
             <Card.Group>
               {tasksList}
             </Card.Group>
-          </Grid.Column>
+          </Grid.Column> */}
         </Grid.Row>
       </Grid>
     )
