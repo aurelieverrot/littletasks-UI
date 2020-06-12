@@ -214,34 +214,12 @@ class Home extends React.Component {
           <TasksList
             dropdownOptions={dropdownOptions}
             homeState={this.state}
+            handleSubmit={this.handleSubmit}
+            handleChange={this.handleChange}
+            handleDelete={this.handleDelete}
+            handleDoneTask={this.handleDoneTask}
             />
-          {/* <Grid.Column className="tasksContainer ten wide" width={10}>
-            <h3>{this.state.tasks.length} task(s) to complete today</h3>
-            <Form onSubmit={this.handleSubmit} className="taskForm"> 
-              <Form.Group >
-                <Form.Input className="six wide"
-                  label='Description'
-                  placeholder='Describe the task'
-                  name='task'
-                  value={this.state.newTask}
-                  onChange={this.handleChange('newTask')} // search how is made handleChange usually
-                />
-                <Form.Select className="six wide"
-                  label='Kiddo'
-                  selection
-                  options={dropdownOptions}
-                  placeholder='Select a Kid'
-                  value={this.state.selectedKidDropdown}
-                  onChange={this.handleChange('selectedKidDropdown')}
-                  icon='i dropdown'
-                />
-                <Form.Button content='Add'  className="four wide " />
-              </Form.Group>
-            </Form>
-            <Card.Group>
-              {tasksList}
-            </Card.Group>
-          </Grid.Column> */}
+          
         </Grid.Row>
       </Grid>
     )
