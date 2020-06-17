@@ -6,10 +6,8 @@ const TasksList = (props) => {
 
   const DEFAULT_KID_SELECTED_VALUE = "something";
 
-
   // generate JSX for the tasks list
   let tasksList = [];
-         
   for (let task of props.homeState.tasks) {
     const thatKidIsCurrentlySelected = props.homeState.selectedKidMenu === task.kiddo;
     const gottaDisplayEverybody = props.homeState.selectedKidMenu === DEFAULT_KID_SELECTED_VALUE;
@@ -37,10 +35,7 @@ const TasksList = (props) => {
       }
   }
 
-
-
   return(
-    
       <Grid.Column className="tasksContainer ten wide" width={10}>
         <h3>{props.homeState.tasks.length} task(s) to complete today</h3>
         <Form onSubmit={props.handleSubmit} className="taskForm"> 

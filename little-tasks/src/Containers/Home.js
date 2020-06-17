@@ -31,23 +31,14 @@ class Home extends React.Component {
       }))
   }
 
-  setTaskToDone() {
-    // API call to task update, 
-    // 1/ set task status to true
-    // 2/ make disappear the task
-    // 3/ update state
-  }
-
   getKiddosFromApi() {
     KiddosApi.kiddosIndex()
     .then(res => {
       const listOfKids = res.data;
       let dict = {}
-
       listOfKids.forEach(function(element) {
         dict[element._id] = element
       })
-
       this.setState({
         kids: dict
       })})
@@ -82,20 +73,14 @@ class Home extends React.Component {
   handleDelete = (taskId) =>
     (e) => {
       e.preventDefault()
-      
-      console.log(taskId)
       TasksApi.tasksDelete(taskId)
-      // .then(res => console.log(res.data))
-      // .then(() => this.getTasksFromApi()) => ca ca marche mais c'est riche
       .then(res => {
-
         let remainingTasks = this.state.tasks.filter((task) => task._id !== taskId)
         this.setState({tasks: remainingTasks})
-
       })
       .catch(error => {
         if (!error.status) {
-          console.log("There might be a connexion problem")
+          console.log("There might be a problem with the connexion")
           return
         }
         // if already deleted, in any case, not in the DB anymore
@@ -121,7 +106,6 @@ class Home extends React.Component {
         this.setState({
           tasks: this.state.tasks
         }))
-      
     }
 
   handleChange = (key) =>
@@ -134,39 +118,7 @@ class Home extends React.Component {
       this.setState(newState)
     }
 
-
   render() {
-    console.log(this.state)
-
-    // generate JSX for the tasks list
-    let tasksList = [];
-         
-    for (let task of this.state.tasks) {
-      const thatKidIsCurrentlySelected = this.state.selectedKidMenu === task.kiddo;
-      const gottaDisplayEverybody = this.state.selectedKidMenu === DEFAULT_KID_SELECTED_VALUE;
-      const taskNotDone = task.status === false;
-      // 
-      if (taskNotDone && (gottaDisplayEverybody || thatKidIsCurrentlySelected)) {
-        tasksList.push(
-          <Card className="taskBlock" key={task._id}>
-            <Card.Content>
-              <Card.Header>{task.description}</Card.Header>
-              <Card.Meta>by {this.state.kids[task.kiddo] ? this.state.kids[task.kiddo].name : 'dunno'}</Card.Meta>
-            </Card.Content>
-            <Card.Content extra>
-              <div className='ui two buttons'>
-                <Button basic color='green' onClick={this.handleDoneTask(task._id)}>
-                  Done!
-                </Button>
-                <Button basic color='red' onClick={this.handleDelete(task._id)}>
-                  Delete
-                </Button>
-              </div>
-            </Card.Content>
-          </Card>
-          )  
-        }
-    }
 
     // generate JSX for the kiddos list
     let kiddosList = [];
@@ -186,8 +138,7 @@ class Home extends React.Component {
         <Card 
           key={kid._id}
           onClick={this.selectKiddo(kid._id)}
-          className="kiddoCards"
-        >
+          className="kiddoCards">
           <Card.Content>
             <Card.Header>{kid.name}</Card.Header>
           </Card.Content>
@@ -219,7 +170,6 @@ class Home extends React.Component {
             handleDelete={this.handleDelete}
             handleDoneTask={this.handleDoneTask}
             />
-          
         </Grid.Row>
       </Grid>
     )
